@@ -30,30 +30,32 @@ function checksCreateTodosUserAvailability(request, response, next) {
   const proOrFree = user.pro;
 
   if (proOrFree || todosQuantity < 10) {
-    return next(); 
+    return next();
   }
 
-  return response.status(403).json({ error: "You need to be pro, to create more than 10 todos!" });
+  return response
+    .status(403)
+    .json({ error: "You need to be pro, to create more than 10 todos!" });
 }
 
 function checksTodoExists(request, response, next) {
   const { id } = request.params;
   const { username } = request.headers;
 
-  const user = users.find(user => user.username === username);
+  const user = users.find((user) => user.username === username);
 
-  if(!user){
-    return response.status(404).json({ error: 'User not found' });
+  if (!user) {
+    return response.status(404).json({ error: "User not found" });
   }
 
-  if(!validate(id)){
-    return response.status(400).json({ error: 'Todo not found' });
+  if (!validate(id)) {
+    return response.status(400).json({ error: "Todo not found" });
   }
 
-  const todo = user.todos.find(todo => todo.id === id);
+  const todo = user.todos.find((todo) => todo.id === id);
 
-  if(!todo){
-    return response.status(404).json({ error: 'Todo not found' });
+  if (!todo) {
+    return response.status(404).json({ error: "Todo not found" });
   }
 
   request.user = user;
